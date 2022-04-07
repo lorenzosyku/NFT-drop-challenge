@@ -109,9 +109,21 @@ function NFTDropPage({ collection }: Props) {
           )}
         </div>
         {/*button */}
-        <button className="mt-10 h-16 rounded-full bg-rose-500 text-white">
-          {' '}
-          Mint NFT (0.01 ETH)
+        <button
+          disabled={
+            isLoading || claimedSupply === totalSupply?.toNumber() || !address
+          }
+          className="mt-10 h-16 rounded-full bg-rose-500 text-white disabled:bg-gray-500"
+        >
+          {isLoading ? (
+            <>Loading...</>
+          ) : claimedSupply === totalSupply?.toNumber() ? (
+            <>SOLD OUT</>
+          ) : !address ? (
+            <>Sign in to Mint</>
+          ) : (
+            <span className="font-bold">Mint NFT (0.01) ETH</span>
+          )}
         </button>
       </div>
     </div>

@@ -1,15 +1,36 @@
-import React from 'react'
-import { useAddress, useDisconnect, useMetamask } from '@thirdweb-dev/react'
+import React, { useEffect, useState } from 'react'
+import {
+  useAddress,
+  useDisconnect,
+  useMetamask,
+  useNFTDrop,
+} from '@thirdweb-dev/react'
 import { GetServerSideProps } from 'next'
 import { sanityClient, urlFor } from '../../sanity'
 import { Collection } from '../../typings'
 import Link from 'next/link'
+import { BigNumber } from '@ethersproject/bignumber'
 
 interface Props {
   collection: Collection
 }
 
 function NFTDropPage({ collection }: Props) {
+  const [claimedSupply, setClaimedSupply] = useState<number>(0)
+  const [totalSupply, setTotalSupply] = useState<BigNumber>()
+  const nftDrop = useNFTDrop(collection.address)
+
+  useEffect(() => {
+    if(!nftDrop) return;
+
+    const fetchNftDropData = async () => {
+      const claimed = await nftDrop.getAllClaimed()
+      const total = await nftDrop.totalSupply() 
+      setClaimedSupply(claimed.length);
+      setTotalSupply(total)
+    }
+  }, [nftDrop])
+
   const connectwithMetaMask = useMetamask()
   const address = useAddress()
   const disconnect = useDisconnect()
@@ -66,7 +87,7 @@ function NFTDropPage({ collection }: Props) {
           />
           <h1 className="text-xl font-bold lg:text-5xl ">{collection.title}</h1>
 
-          <p className="pt-2 text-xl text-green-500">11 / 34 NFT's claimed</p>
+          <p className="pt-2 text-xl text-green-500">{claimedSupply} / {totalSupply?.toString()} NFT's claimed</p>
         </div>
         {/*button */}
         <button className="mt-10 h-16 rounded-full bg-rose-500 text-white">

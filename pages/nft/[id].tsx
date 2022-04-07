@@ -18,17 +18,22 @@ interface Props {
 function NFTDropPage({ collection }: Props) {
   const [claimedSupply, setClaimedSupply] = useState<number>(0)
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
+
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const nftDrop = useNFTDrop(collection.address)
 
   useEffect(() => {
-    if(!nftDrop) return;
+    setIsLoading(true)
+    if (!nftDrop) return
 
     const fetchNftDropData = async () => {
       const claimed = await nftDrop.getAllClaimed()
-      const total = await nftDrop.totalSupply() 
-      setClaimedSupply(claimed.length);
+      const total = await nftDrop.totalSupply()
+      setClaimedSupply(claimed.length)
       setTotalSupply(total)
+      setIsLoading(false)
     }
+    fetchNftDropData()
   }, [nftDrop])
 
   const connectwithMetaMask = useMetamask()
@@ -87,7 +92,21 @@ function NFTDropPage({ collection }: Props) {
           />
           <h1 className="text-xl font-bold lg:text-5xl ">{collection.title}</h1>
 
-          <p className="pt-2 text-xl text-green-500">{claimedSupply} / {totalSupply?.toString()} NFT's claimed</p>
+          {isLoading ? (
+            <p className="pt-2 text-xl text-green-500">Loading...</p>
+          ) : (
+            <p className="pt-2 text-xl text-green-500">
+              {claimedSupply} / {totalSupply?.toString()} NFT's claimed
+            </p>
+          )}
+
+          {isLoading && (
+            <img
+              className="h-80 w-80 object-contain"
+              src="https://cdn.hackernoon.com/images/0*4Gzjgh9Y7Gu8KEtZ.gif"
+              alt=""
+            />
+          )}
         </div>
         {/*button */}
         <button className="mt-10 h-16 rounded-full bg-rose-500 text-white">

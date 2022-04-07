@@ -134,8 +134,8 @@ function NFTDropPage({ collection }: Props) {
         {/*header */}
         <header className="flex items-center justify-between">
           <Link href={'/'}>
-            <h2 className="sm:w-18 w-52 cursor-pointer text-xl font-extralight">
-              the papafam nft marketplace
+            <h2 className="sm:w-18 w-52 cursor-pointer text-xl font-extralight italic hover:bg-gradient-to-br from-yellow-400 to-rose-600 p-2 hover:text-stone-50">
+              Loro's NFT collection
             </h2>
           </Link>
 

@@ -1,7 +1,8 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 import { sanityClient, urlFor } from '../sanity'
 import { Collection } from '../typings'
 
@@ -11,17 +12,12 @@ interface Props {
 
 const Home = ({ collections }: Props) => {
   return (
-    <div className="">
+    <div className="bg-indigo-800">
       <Head>
         <title>NFT Drop</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>welcome to the nft drop challenge</h1>
-      <header className="flex items-center justify-between">
-        <h2 className="sm:w-18 w-52 cursor-pointer text-xl font-extralight">
-          the papafam nft marketplace
-        </h2>
-      </header>
+      <Header />
       <main className="bg-slate-100 p-10 shadow-xl shadow-rose-400/20">
         <div className="grid space-x-3 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {collections.map((collection) => (
@@ -43,6 +39,7 @@ const Home = ({ collections }: Props) => {
           ))}
         </div>
       </main>
+      <Footer/>
     </div>
   )
 }

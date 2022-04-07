@@ -10,6 +10,7 @@ import { sanityClient, urlFor } from '../../sanity'
 import { Collection } from '../../typings'
 import Link from 'next/link'
 import { BigNumber } from '@ethersproject/bignumber'
+import toast, { Toaster } from 'react-hot-toast'
 
 interface Props {
   collection: Collection
@@ -18,9 +19,21 @@ interface Props {
 function NFTDropPage({ collection }: Props) {
   const [claimedSupply, setClaimedSupply] = useState<number>(0)
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
-
+  const [priceInEth, setPriceInEth] = useState<string>()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const nftDrop = useNFTDrop(collection.address)
+
+
+  useEffect(() => {
+    if(!nftDrop) return;
+
+    const fetchPrice = async () => {
+      const claimConditions = await nftDrop.claimConditions.getAll()
+      setPriceInEth(claimConditions?.[0].currencyMetadata.displayValue)
+    }
+
+    fetchPrice()
+  }, [nftDrop])
 
   useEffect(() => {
     setIsLoading(true)
@@ -40,8 +53,65 @@ function NFTDropPage({ collection }: Props) {
   const address = useAddress()
   const disconnect = useDisconnect()
 
+  const mintNFT = () => {
+    if (!nftDrop || !address) return
+    const quantity = 1 // how many unique nft's you want to claimed
+    setIsLoading(true)
+
+    const notification = toast.loading('Minting NFT...', {
+      style: {
+        background: 'white',
+        color: 'green',
+        fontWeight: 'bold',
+        fontSize: '17px',
+        padding: '20px',
+      },
+    })
+
+    nftDrop
+      .claimTo(address, quantity)
+      .then(async (tx) => {
+        const receipt = tx[0].receipt
+        const claimedTokenId = tx[0].id
+        const claimedNFT = await tx[0].data()
+
+        toast('HOORAY...You successfully Minted!!', {
+          duration: 5000,
+          style: {
+            background: 'green',
+            color: 'white',
+            fontWeight: 'bolder',
+            fontSize: '17px',
+            padding: '20px',
+          },
+        })
+
+        console.log('claimedNFT', claimedNFT)
+        console.log('claimedTokenId', claimedTokenId)
+        console.log('receipt', receipt)
+      })
+      .catch((error) => {
+        console.error('mintNft func: ', error)
+        toast('Whoops...Something went wrong!', {
+          style: {
+            background: 'red',
+            color: 'white',
+            fontWeight: 'bolder',
+            fontSize: '17px',
+            padding: '20px',
+          },
+        })
+      })
+      .finally(() => {
+        setIsLoading(false)
+        toast.dismiss(notification)
+      })
+
+  }
+
   return (
     <div className="flex h-screen flex-col lg:grid lg:grid-cols-10">
+      <Toaster position="bottom-center"/>
       <div className="bg-gradient-to-br from-cyan-800 to-rose-500 lg:col-span-4">
         <div className="flex flex-col items-center justify-center py-2 lg:min-h-screen">
           <div className="rounded-xl bg-gradient-to-br from-yellow-400 to-purple-600 p-2">
@@ -122,7 +192,7 @@ function NFTDropPage({ collection }: Props) {
           ) : !address ? (
             <>Sign in to Mint</>
           ) : (
-            <span className="font-bold">Mint NFT (0.01) ETH</span>
+            <span onClick={mintNFT} className="font-bold">Mint NFT ({priceInEth}) ETH</span>
           )}
         </button>
       </div>

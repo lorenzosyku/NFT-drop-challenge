@@ -1,21 +1,23 @@
-# Next.js + Tailwind CSS Example
+## NFT Marketplace
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+![alt text](./images/demo.png)
 
-## Deploy your own
+## Built With
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+- [NextJS](https://nextjs.org/) - The React Framework
+  for Production.
+  - Authentication flow with Twitter API using NextAuth
+  - Server Side Rendering
+  - Create API backend endpoints
+- [TailwindCSS 3](https://tailwindcss.com/) - Rapidly build modern websites without ever leaving your HTML
+- [TypeScript](https://www.typescriptlang.org/) - TypeScript is JavaScript with syntax for types.
+  Intuitive SDKs and widgets for developers.
+- [Sanity](https://www.sanity.io/) - Sanity.io is the unified content platform that powers better digital experiences.
+  - Query data using GROQ query language
+  - Add data to Sanity CMS Backend from the frontend using Mutations
+  - Ability to BAN a tweet via the Sanity Platform
+- [React Hot Toast](https://react-hot-toast.com/) - Smoking hot React notifications.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+  <br>
 
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-# or
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+---
